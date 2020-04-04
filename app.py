@@ -10,6 +10,13 @@ from flask_login import LoginManager, UserMixin, login_user
 
 from flask_bcrypt import Bcrypt
 
+from .api import blueprint as api_blueprint
+from .ui import blueprint as ui_blueprint
+
+app = Flask(__name__, static_folder = './ui/static')
+app.register_blueprint(ui_blueprint)
+app.register_blueprint(api_blueprint, url_prefix = '/api')
+
 app = Flask(__name__)
 
 
