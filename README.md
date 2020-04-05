@@ -1,5 +1,5 @@
-# LLR-site-API
-API for LLR  Hall Website
+# LLR-site
+LLR  Hall Website
 
 # Installation and Setup
 
