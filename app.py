@@ -28,6 +28,9 @@ def load_user(user_id):
 	return User.query.get(int(user_id))
 
 class User(db.Model,UserMixin):
+	'''
+	DB model for Alum
+	'''
 	id=db.Column(db.Integer, primary_key=True)
 	username=db.Column(db.String(20), unique=True, nullable=False)
 	email=db.Column(db.String(120), unique=True, nullable=False)
@@ -41,6 +44,18 @@ class User(db.Model,UserMixin):
 		return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 
+# class Complaint(db.Model):
+# 	'''
+# 	DB Model for Student's Complaint
+# 	IS THIS NEEDED, IF WE ARE MAILING
+# 	'''
+# 	id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String())
+#     room_no = db.Column(db.String())
+#     complaint = db.Column(db.String())
+
+#     def __repr__(self):
+#         return 'Complaint {} by {}'.format(self.complaint, self.name)
 
 
 @app.route("/")
@@ -55,6 +70,9 @@ def about():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+	'''
+	Sign Up for Alumni
+	'''
 	form=RegistrationForm()
 	if form.validate_on_submit():
 		hashed_password=bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -67,6 +85,9 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+	'''
+	Login for Alum Portal
+	'''
 	form=LoginForm()
 	if form.validate_on_submit():
 		user=User.query.filter_by(email=form.email.data).first()
@@ -78,6 +99,18 @@ def login():
 	return render_template('login.html', title='Login', form=form)
 
 
+
+@app.route("/complaint", methods=['POST'])
+def complaint():
+	'''
+	Register Complaint and mail to manager 
+	'''
+	pass
+	form = ComplaintForm()
+	if form.validate_on_submit():
+		name = form.name.data
+		room = form.room.data
+		complaint = form.complaint.data
 
 
 
@@ -102,6 +135,10 @@ class RegistrationForm(FlaskForm):
 			raise ValidationError('Email already exist')
 
 
+class ComplaintForm(FlaskForm):
+	name = StringField('Name', validators=[DataRequired()])
+	room = StringField('Room Number', validators=[DataRequired()])
+	complaint = StringField('Complaint', validators=[DataRequired()])
 
 class LoginForm(FlaskForm):
 	email=StringField('Email', validators=[DataRequired(), Email()])
