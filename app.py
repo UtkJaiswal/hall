@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect
+from flask import Flask, render_template, url_for, flash, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 '''from forms import RegistrationForm, LoginForm'''
 
@@ -9,6 +9,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from flask_login import LoginManager, UserMixin, login_user
 
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail,Message
 
 
 
@@ -17,10 +18,19 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY']= '8d2c6184ae40cc9efdefe76c746248dd'
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///site.db'
+app.config.update(
+	DEBUG=True,
+	#EMAIL SETTINGS
+	MAIL_SERVER='smtp.gmail.com',
+	MAIL_PORT=465,
+	MAIL_USE_SSL=True,
+	MAIL_USERNAME = 'llr.hall.complaints@gmail.com',
+	MAIL_PASSWORD = 'yollr123'
+	)
 db=SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 login_manager=LoginManager(app)
-
+mail = Mail(app)
 '''from models import User'''
 
 @login_manager.user_loader
@@ -100,17 +110,34 @@ def login():
 
 
 
-@app.route("/complaint", methods=['POST'])
+@app.route("/complaint", methods=['GET', 'POST'])
 def complaint():
 	'''
 	Register Complaint and mail to manager 
 	'''
-	pass
+	
 	form = ComplaintForm()
-	if form.validate_on_submit():
-		name = form.name.data
-		room = form.room.data
-		complaint = form.complaint.data
+	
+	# render the complaint template on get request in browser
+	print('request.method = ', request.method)
+	if request.method ==  "GET":
+		print('in get')
+		return render_template('complaint.html', title='Hall Complaint', form=form)
+
+	# on form submission, a POST request is made which sends the mail
+	elif request.method == 'POST':
+		if form.validate_on_submit():
+			name = form.name.data
+			room = form.room.data
+			complaint = form.complaint.data
+			try:
+				msg = Message('Complaint from Boarder '+ name + '' + room, sender="llr.hall.complaints@gmail.com",recipients=["utkjaiswal58@gmail.com", "rka87338@gmail.com"])
+				msg.html = "<h3>" + complaint + "</h3>"
+				mail.send(msg)
+				return  '<h1>Your mail has been sent Successfully</h1>'
+			except:
+				return 'Could not send Mail'
+
 
 
 
@@ -139,6 +166,7 @@ class ComplaintForm(FlaskForm):
 	name = StringField('Name', validators=[DataRequired()])
 	room = StringField('Room Number', validators=[DataRequired()])
 	complaint = StringField('Complaint', validators=[DataRequired()])
+	submit=SubmitField('Submit Complaint')
 
 class LoginForm(FlaskForm):
 	email=StringField('Email', validators=[DataRequired(), Email()])
