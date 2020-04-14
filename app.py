@@ -60,19 +60,6 @@ class User(db.Model,UserMixin):
 		return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 
-# class Complaint(db.Model):
-# 	'''
-# 	DB Model for Student's Complaint
-# 	IS THIS NEEDED, IF WE ARE MAILING
-# 	'''
-# 	id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String())
-#     room_no = db.Column(db.String())
-#     complaint = db.Column(db.String())
-
-#     def __repr__(self):
-#         return 'Complaint {} by {}'.format(self.complaint, self.name)
-
 
 @app.route("/")
 @app.route("/home")
@@ -146,16 +133,12 @@ def dashboard():
 		if form.picture.data:
 			picture_file = save_picture(form.picture.data)
 			current_user.image_file = picture_file
-		'''current_user.username = form.username.data
-		current_user.email = form.email.data
-		current_user.department = form.department.data
-		current_user.room_no = form.room_no.data
-		current_user.batch = form.batch.data
-		db.session.commit()'''
+		
+		db.session.commit()
 		flash('Your account has been updated!', 'success')
 		return redirect(url_for('dashboard'))
 	image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-	return render_template('dashboard.html', title='Dashboard', image_file=image_file , form=form)
+	return render_template('dashboard.html', title='Dashboard', image_file=image_file , form=form, user=current_user.username, email=current_user.email)
 
 
 @app.route("/complaint", methods=['GET', 'POST'])
@@ -212,24 +195,10 @@ class RegistrationForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
-	username=StringField('Name')
-	email=StringField('Email')
-	department=StringField('Department')
-	room_no=StringField('Room Number')
-	batch=StringField('Batch')
 	picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
 	submit=SubmitField('Update Profile')
 
-	# def validate_username(self, username):
-	# 	user=User.query.filter_by(username=username.data).first()
-	# 	if user:
-	# 		raise ValidationError('Username already exist')
-
-	# def validate_email(self, email):
-	# 	user=User.query.filter_by(email=email.data).first()
-	# 	if user:
-	# 		raise ValidationError('Email already exist')
-
+	
 
 
 class ComplaintForm(FlaskForm):
