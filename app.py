@@ -132,7 +132,12 @@ def dashboard():
 	if form.validate_on_submit():
 		if form.picture.data:
 			picture_file = save_picture(form.picture.data)
-			current_user.image_file = current_user.image_file + ','+ picture_file
+			
+			# Consider the first picture as profile, hence replace it with the default one 
+			if current_user.image_file == 'default.jpg':
+				current_user.image_file = picture_file
+			else:
+				current_user.image_file = current_user.image_file + ','+ picture_file
 		
 		db.session.commit()
 		flash('Your account has been updated!', 'success')
