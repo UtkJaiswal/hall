@@ -50,7 +50,7 @@ class User(db.Model,UserMixin):
 	id=db.Column(db.Integer, primary_key=True)
 	username=db.Column(db.String(20), unique=True, nullable=False)
 	email=db.Column(db.String(120), unique=True, nullable=False)
-	image_file=db.Column(db.String(20), nullable=False, default='default.jpg')
+	image_file=db.Column(db.String(), nullable=False, default='default.jpg')
 	password=db.Column(db.String(60), nullable=False)
 	department=db.Column(db.String(20), nullable=False)
 	room_no=db.Column(db.String(20), nullable=False)
@@ -132,13 +132,14 @@ def dashboard():
 	if form.validate_on_submit():
 		if form.picture.data:
 			picture_file = save_picture(form.picture.data)
-			current_user.image_file = picture_file
+			current_user.image_file = current_user.image_file + ','+ picture_file
 		
 		db.session.commit()
 		flash('Your account has been updated!', 'success')
 		return redirect(url_for('dashboard'))
-	image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-	return render_template('dashboard.html', title='Dashboard', image_file=image_file , form=form, user=current_user.username, email=current_user.email)
+	images = current_user.image_file.split(",")
+	image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ]
+	return render_template('dashboard.html', title='Dashboard', image_files=image_files, form=form, user=current_user.username, email=current_user.email)
 
 
 @app.route("/complaint", methods=['GET', 'POST'])
