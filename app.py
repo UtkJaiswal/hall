@@ -144,7 +144,13 @@ def dashboard():
 		return redirect(url_for('dashboard'))
 	images = current_user.image_file.split(",")
 	image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ]
-	return render_template('dashboard.html', title='Dashboard', image_files=image_files, form=form, user=current_user.username, email=current_user.email)
+	
+	profile_pic = image_files[0]
+	gallery = image_files[1:]
+
+	is_default_profile = True if profile_pic == 'default.jpg' else False
+	
+	return render_template('dashboard.html', title='Dashboard', gallery=gallery, profile_pic = profile_pic, is_default_profile = is_default_profile, form=form, user=current_user.username, email=current_user.email)
 
 
 @app.route("/complaint", methods=['GET', 'POST'])
@@ -202,7 +208,7 @@ class RegistrationForm(FlaskForm):
 
 class UpdateAccountForm(FlaskForm):
 	picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
-	submit=SubmitField('Update Profile')
+	submit=SubmitField('Update Gallery')
 
 	
 
