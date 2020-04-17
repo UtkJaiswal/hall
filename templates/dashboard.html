@@ -1,104 +1,32 @@
  {% extends "layout.html" %}
  {% block content %}
- 	<div class="content-section">
- 		<div class="media">
- 			<img class="rounded-circle account-img" src="{{ image_file }}"><br><br><br>
- 			<div class="media-body">
- 				
+
+ <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+ 	<div class="content-section alum">
+		 <img class="rounded-circle account pro" src = "{{ profile_pic }}" />
+		 	{% if is_default_profile  %}
+			 <div class="form-group pro-pic">
+				<h6>Update Profile</h6>
+				{{ form.picture(class="form-control-file")}}
+				{{form.submit(class="btn btn-outline-dark")}}
+			</div>
+			{% endif %}
  			</div>
  		</div>
- 		<h2 class="account-heading">{{ current_user.username }}</h2>
-		<p class="text-secondary">{{ current_user.email }}</p>
+ 		<h2 class="account-heading name">{{ user }}</h2>
+		<p class="text-secondary email">{{ email }}</p>
 
 
  		<div class="content-section">
  		<form method="POST" action="" enctype="multipart/form-data">
  			{{ form.hidden_tag() }}
  			<fieldset class="form-group">
- 				<legend class="border-bottom mb-4">Update Profile</legend>
-
- 				<!--<div class="form-group">
- 					{{ form.username.label(class="form-control-label")}}
-
- 					{% if form.username.errors %}
- 						{{ form.username(class="form-control form-control-lg is-invalid")}}
- 						<div class="invalid-feedback">
- 							{% for error in form.username.errors %}
- 							<span>{{ error }}</span>
- 							{% endfor %}
- 						</div>
-					{% else %}
-						{{ form.username(class="form-control form-control-lg")}}
-					{% endif %}
- 				</div>
+ 				<legend class="border-bottom mb-4 gallery">Gallery<em>(Your memories from LLR days)</em></legend>
 
  				<div class="form-group">
- 					{{ form.email.label(class="form-control-label")}}
- 					{% if form.email.errors %}
- 						{{ form.email(class="form-control form-control-lg is-invalid")}}
- 						<div class="invalid-feedback">
- 							{% for error in form.email.errors %}
- 							<span>{{ error }}</span>
- 							{% endfor %}
- 						</div>
-					{% else %}
-						{{ form.email(class="form-control form-control-lg")}}
-					{% endif %}
- 				</div>
-
- 				
-
- 				
-
- 				<div class="form-group">
- 					{{ form.department.label(class="form-control-label")}}
-
- 					{% if form.department.errors %}
- 						{{ form.department(class="form-control form-control-lg is-invalid")}}
- 						<div class="invalid-feedback">
- 							{% for error in form.department.errors %}
- 							<span>{{ error }}</span>
- 							{% endfor %}
- 						</div>
-					{% else %}
-						{{ form.department(class="form-control form-control-lg")}}
-					{% endif %}
- 				</div>
-
- 				<div class="form-group">
- 					{{ form.room_no.label(class="form-control-label")}}
-
- 					{% if form.room_no.errors %}
- 						{{ form.room_no(class="form-control form-control-lg is-invalid")}}
- 						<div class="invalid-feedback">
- 							{% for error in form.room_no.errors %}
- 							<span>{{ error }}</span>
- 							{% endfor %}
- 						</div>
-					{% else %}
-						{{ form.room_no(class="form-control form-control-lg")}}
-					{% endif %}
- 				</div>
-
- 				<div class="form-group">
- 					{{ form.batch.label(class="form-control-label")}}
-
- 					{% if form.batch.errors %}
- 						{{ form.batch(class="form-control form-control-lg is-invalid")}}
- 						<div class="invalid-feedback">
- 							{% for error in form.batch.errors %}
- 							<span>{{ error }}</span>
- 							{% endfor %}
- 						</div>
-					{% else %}
-						{{ form.batch(class="form-control form-control-lg")}}
-					{% endif %}
- 				</div>-->
-
-
- 				<div class="form-group">
- 					{{ form.picture.label()}}
- 					{{ form.picture(class="form-control-file")}}
+					 {{ form.picture(class="form-control-file")}}
+					 {{form.submit(class="btn btn-outline-primary")}}
  					{% if form.picture.errors %}
  						{% for error in form.picture.errors %}
  							<span class="text-danger">{{ error }}</span><br>
@@ -106,11 +34,13 @@
  					{% endif %}
  				</div>
 
-
  			</fieldset>
  			<div class="form-group">
- 				{{form.submit(class="btn btn-outline-info")}}
- 			</div>
+				<div class="media">
+					{% for image_file in gallery %}
+						<img class="circle account-img gallery-images" src="{{ image_file }}" /><br><br><br>
+				   {% endfor %}
+				
  		</form>
  	</div>
  	</div>

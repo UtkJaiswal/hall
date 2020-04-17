@@ -50,7 +50,7 @@ class User(db.Model,UserMixin):
 	id=db.Column(db.Integer, primary_key=True)
 	username=db.Column(db.String(20), unique=True, nullable=False)
 	email=db.Column(db.String(120), unique=True, nullable=False)
-	image_file=db.Column(db.String(20), nullable=False, default='default.jpg')
+	image_file=db.Column(db.String(), nullable=False, default='default.jpg')
 	password=db.Column(db.String(60), nullable=False)
 	department=db.Column(db.String(20), nullable=False)
 	room_no=db.Column(db.String(20), nullable=False)
@@ -59,19 +59,6 @@ class User(db.Model,UserMixin):
 	def __repr__(self):
 		return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
-
-# class Complaint(db.Model):
-# 	'''
-# 	DB Model for Student's Complaint
-# 	IS THIS NEEDED, IF WE ARE MAILING
-# 	'''
-# 	id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String())
-#     room_no = db.Column(db.String())
-#     complaint = db.Column(db.String())
-
-#     def __repr__(self):
-#         return 'Complaint {} by {}'.format(self.complaint, self.name)
 
 
 @app.route("/")
@@ -145,17 +132,25 @@ def dashboard():
 	if form.validate_on_submit():
 		if form.picture.data:
 			picture_file = save_picture(form.picture.data)
-			current_user.image_file = picture_file
-		'''current_user.username = form.username.data
-		current_user.email = form.email.data
-		current_user.department = form.department.data
-		current_user.room_no = form.room_no.data
-		current_user.batch = form.batch.data'''
+			
+			# Consider the first picture as profile, hence replace it with the default one 
+			if current_user.image_file == 'default.jpg':
+				current_user.image_file = picture_file
+			else:
+				current_user.image_file = current_user.image_file + ','+ picture_file
+		
 		db.session.commit()
 		flash('Your account has been updated!', 'success')
 		return redirect(url_for('dashboard'))
-	image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-	return render_template('dashboard.html', title='Dashboard', image_file=image_file , form=form)
+	images = current_user.image_file.split(",")
+	image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ]
+	
+	profile_pic = image_files[0]
+	gallery = image_files[1:]
+
+	is_default_profile = True if profile_pic == 'default.jpg' else False
+	
+	return render_template('dashboard.html', title='Dashboard', gallery=gallery, profile_pic = profile_pic, is_default_profile = is_default_profile, form=form, user=current_user.username, email=current_user.email)
 
 
 @app.route("/complaint", methods=['GET', 'POST'])
@@ -212,24 +207,10 @@ class RegistrationForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
-	username=StringField('Name')
-	email=StringField('Email')
-	department=StringField('Department')
-	room_no=StringField('Room Number')
-	batch=StringField('Batch')
 	picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
-	submit=SubmitField('Update Profile')
+	submit=SubmitField('Update Gallery')
 
-	# def validate_username(self, username):
-	# 	user=User.query.filter_by(username=username.data).first()
-	# 	if user:
-	# 		raise ValidationError('Username already exist')
-
-	# def validate_email(self, email):
-	# 	user=User.query.filter_by(email=email.data).first()
-	# 	if user:
-	# 		raise ValidationError('Email already exist')
-
+	
 
 
 class ComplaintForm(FlaskForm):

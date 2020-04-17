@@ -1,0 +1,51 @@
+body {
+    background: #11998e;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+
+.gallery-images {
+    margin: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 4%;
+    
+}
+
+.pro {
+    width: 200px;
+    height: 200px;
+}
+
+.gallery {
+    font-weight: 350;
+
+}
+
+
+.alum {
+    margin-left: auto;
+    margin-right: auto;
+    width: 10em
+   
+}
+
+.pro-pic {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.name {
+    text-align: center;
+    color: black;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.email {
+    text-align: center;
+    color: black;
+    font-weight: 500;
+}
