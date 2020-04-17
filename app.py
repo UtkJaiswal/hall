@@ -130,9 +130,9 @@ def save_picture(form_picture):
 	_, f_ext = os.path.splitext(form_picture.filename)
 	picture_fn = random_hex + f_ext
 	picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
-	output_size = (125, 125)
+	
 	i = Image.open(form_picture)
-	i.thumbnail(output_size)
+	
 	i.save(picture_path)
 	return picture_fn
 
@@ -150,8 +150,8 @@ def dashboard():
 		current_user.email = form.email.data
 		current_user.department = form.department.data
 		current_user.room_no = form.room_no.data
-		current_user.batch = form.batch.data
-		db.session.commit()'''
+		current_user.batch = form.batch.data'''
+		db.session.commit()
 		flash('Your account has been updated!', 'success')
 		return redirect(url_for('dashboard'))
 	image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
