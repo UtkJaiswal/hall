@@ -148,8 +148,7 @@ def dashboard():
 	profile_pic = image_files[0]
 	gallery = image_files[1:]
 
-	is_default_profile = True if profile_pic == 'default.jpg' else False
-	
+	is_default_profile = True if images[0] == 'default.jpg' else False
 	return render_template('dashboard.html', title='Dashboard', gallery=gallery, profile_pic = profile_pic, is_default_profile = is_default_profile, form=form, user=current_user.username, email=current_user.email)
 
 
