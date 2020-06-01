@@ -48,15 +48,15 @@
             <li class="nav-item"><a class="nav-link" href="#section-team">Team</a></li>
             <li class="nav-item"><a class="nav-link" href="#section-rooms">Rooms</a></li>
             <li class="nav-item"><a class="nav-link" href="#section-menus">Menus</a></li>-->
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}"><h3>Home</h3></a></li>
             {% if current_user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><h3>Logout</h3></a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}"><h3>Dashboard</h3></a></li>
             {% else %}
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Alumni Portal</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}"><h3>Alumni Portal</h3></a></li>
             {% endif %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('complaint') }}">Complaint</a></li>
-			<li class="nav-item"><a class="nav-link" href="{{ url_for('council') }}">Hall Council</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('complaint') }}"><h3>Complaint</h3></a></li>
+			<li class="nav-item"><a class="nav-link" href="{{ url_for('council') }}"><h3>Hall Council</h3></a></li>
            <!-- <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link" href="#" target="_blank"><span class="pb_rounded-4 px-4 rounded">Get Started</span></a></li>-->
           </ul>
         </div>
