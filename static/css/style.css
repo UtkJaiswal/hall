@@ -21,6 +21,7 @@ a {
   transition: .3s all ease;
   text-decoration: none; }
   a:hover {
+	color: #fff;
     text-decoration: none; }
 
 h1, h2, h3, h4, h5 {
@@ -911,7 +912,6 @@ textarea.form-control {
   .block-2 .front {
     -webkit-transform: rotateY(0deg);
     -ms-transform: rotateY(0deg);
-    background: lightgreen;
     z-index: 2;
     background-size: cover;
     background-position: center center;
