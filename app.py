@@ -65,10 +65,17 @@ class User(db.Model,UserMixin):
 @app.route("/home")
 def home():
 	return render_template('index.html')
+@app.route("/index")
+def index():
+	return render_template('index.html')
 
 @app.route("/about")
 def about():
 	return render_template('about.html' , title='About')
+
+@app.route("/council")
+def council():
+	return render_template('council.html' , title='About')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -91,6 +98,7 @@ def login():
 	'''
 	Login for Alum Portal
 	'''
+	print('m here')
 	form=LoginForm()
 	if form.validate_on_submit():
 		user=User.query.filter_by(email=form.email.data).first()
@@ -117,10 +125,14 @@ def save_picture(form_picture):
 	_, f_ext = os.path.splitext(form_picture.filename)
 	picture_fn = random_hex + f_ext
 	picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
-	
+	output_size = (125, 125)
 	i = Image.open(form_picture)
-	
+	width,height = i.size
+	print('width = ' + str(width))
+	print('height = ' + str(height))
 	i.save(picture_path)
+	i.thumbnail(output_size)
+	
 	return picture_fn
 
 
@@ -148,7 +160,8 @@ def dashboard():
 	profile_pic = image_files[0]
 	gallery = image_files[1:]
 
-	is_default_profile = True if images[0] == 'default.jpg' else False
+	is_default_profile = True if profile_pic == 'default.jpg' else False
+	
 	return render_template('dashboard.html', title='Dashboard', gallery=gallery, profile_pic = profile_pic, is_default_profile = is_default_profile, form=form, user=current_user.username, email=current_user.email)
 
 
@@ -173,7 +186,7 @@ def complaint():
 			room = form.room.data
 			complaint = form.complaint.data
 			try:
-				msg = Message('Complaint from Boarder '+ name + '' + room, sender="llr.hall.complaints@gmail.com",recipients=["utkjaiswal58@gmail.com", "rka87338@gmail.com"])
+				msg = Message('Complaint from Boarder '+ name + '' + room, sender="llr.hall.complaints@gmail.com",recipients=["dnndgupta@gmail.com", "rka87338@gmail.com"])
 				msg.html = "<h3>" + complaint + "</h3>"
 				mail.send(msg)
 				return  '<h1>Your mail has been sent Successfully</h1>'
