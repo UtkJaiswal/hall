@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block content %}
+<head>
+	<style>
+		.containe {
+    width: 45em;
+    height: 45em;
+    position: relative;
+    overflow: hidden;
+    
+}
+		.gc-card{
+			margin-top: 18em;
+			height: 30em;
+			margin-bottom: 4em;
+		}
+		.caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 0;
+    transition: all 0.3s;
+    background-color: rgba(0, 0, 0, 0);
+
+}
+
+		.containe:hover .caption{
+			opacity: 1;
+		}
+		.containe:hover img{
+			opacity: 0.5;
+		}
+		
+	</style>
+
+<link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+
+</head>
+
+<div class="containe" >
+	<img src="static/images/50477466_2228449757207441_1910721995260035072_o.jpg" class="gc-card"  style="width: 100%" />
+	<div class="caption">
+            <h1>GOLD winning Inter-Hall stage</h1>
+            <a href="https://www.youtube.com/watch?v=sESTTSCZwBU&feature=youtu.be" style="color: white;">Click here for full video</a>
+        </div>
+       
+</div>
+<div class="containe" >
+	<img src="static/images/51993462_2260119407373809_323661098974707712_o.jpg" class="gc-card"  style="width: 100%">
+	<div class="caption">
+            <h1>SILVER in Inter-Hall Badminton</h1>
+            
+        </div>
+        
+</div>
+
+<div class="containe" >
+	<img src="static/images/53850150_2302549469797469_4927612645806178304_o.jpg" class="gc-card" style="width: 100%">
+	<div class="caption">
+            <h1>GOLD in Product_Design</h1>
+            
+        </div>
+        
+</div>
+
+<div class="containe" >
+	<img src="static/images/55897053_2323129647739451_3840399785731293184_n.jpg" class="gc-card" style="width: 100%">
+	<div class="caption">
+            <h1>SILVER in Inter-Hall Case Study </h1>
+            
+        </div>
+        
+</div>
+
+
+{% endblock content %}

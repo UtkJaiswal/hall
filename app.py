@@ -65,10 +65,21 @@ class User(db.Model,UserMixin):
 @app.route("/home")
 def home():
 	return render_template('index.html')
+@app.route("/index")
+def index():
+	return render_template('index.html')
 
 @app.route("/about")
 def about():
 	return render_template('about.html' , title='About')
+
+@app.route("/council")
+def council():
+	return render_template('council.html' , title='Council')
+
+@app.route("/gc")
+def gc():
+	return render_template('gc.html' , title='General Championship')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -91,6 +102,7 @@ def login():
 	'''
 	Login for Alum Portal
 	'''
+	print('m here')
 	form=LoginForm()
 	if form.validate_on_submit():
 		user=User.query.filter_by(email=form.email.data).first()
@@ -117,10 +129,14 @@ def save_picture(form_picture):
 	_, f_ext = os.path.splitext(form_picture.filename)
 	picture_fn = random_hex + f_ext
 	picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
-	
+	output_size = (125, 125)
 	i = Image.open(form_picture)
-	
+	width,height = i.size
+	print('width = ' + str(width))
+	print('height = ' + str(height))
 	i.save(picture_path)
+	i.thumbnail(output_size)
+	
 	return picture_fn
 
 
@@ -174,7 +190,7 @@ def complaint():
 			room = form.room.data
 			complaint = form.complaint.data
 			try:
-				msg = Message('Complaint from Boarder '+ name + '' + room, sender="llr.hall.complaints@gmail.com",recipients=["utkjaiswal58@gmail.com", "rka87338@gmail.com"])
+				msg = Message('Complaint from Boarder '+ name + '' + room, sender="llr.hall.complaints@gmail.com",recipients=["dnndgupta@gmail.com", "rka87338@gmail.com"])
 				msg.html = "<h3>" + complaint + "</h3>"
 				mail.send(msg)
 				return  '<h1>Your mail has been sent Successfully</h1>'
