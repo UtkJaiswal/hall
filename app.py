@@ -4,6 +4,7 @@ from PIL import Image
 from flask import Flask, render_template, url_for, flash, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 '''from forms import RegistrationForm, LoginForm'''
+import sqlite3 as sql
 
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
@@ -64,10 +65,30 @@ class User(db.Model,UserMixin):
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template('index.html')
+        print('hey1')
+        con = sql.connect('database.db')
+        cur = con.execute('SELECT * FROM images')
+        batch_yr = []
+        data = cur.fetchall()
+        for d in data:
+                if(d[1] not in batch_yr):
+                        batch_yr.append(d[1])
+        print('batch = ' + str(batch_yr))
+        cur.close()
+        return render_template('index.html',year = batch_yr)
 @app.route("/index")
 def index():
-	return render_template('index.html')
+        print('hey1')
+        con = sql.connect('database.db')
+        cur = con.execute('SELECT * FROM images')
+        batch_yr = []
+        data = cur.fetchall()
+        for d in data:
+                if(d[1] not in batch_yr):
+                        batch_yr.append(d[1])
+        print('batch = ' + str(batch_yr))
+        cur.close()
+        return render_template('index.html',year = batch_yr)
 
 @app.route("/about")
 def about():
@@ -136,7 +157,19 @@ def save_picture(form_picture):
 	print('height = ' + str(height))
 	i.save(picture_path)
 	i.thumbnail(output_size)
-	
+	battch = current_user.batch
+	user_name = current_user.username
+	print('user = ' + str(user_name))
+	print('curr batch = ' + str(current_user.batch))
+	con = sql.connect('database.db')
+	cur = con.cursor()
+	cur.execute("INSERT INTO images (year,name,image) VALUES (?,?,?)",(int(battch),user_name,picture_fn))
+	cur.close()
+	cur1 = con.execute('SELECT * FROM images')
+	dat = cur1.fetchall()
+	print('dat = ' + str(dat))
+	cur1.close()
+	con.commit()
 	return picture_fn
 
 
@@ -198,6 +231,26 @@ def complaint():
 				return 'Could not send Mail'
 
 
+@app.route("/gallery")
+def gallery():
+        print('hello')
+        batch_year = []
+        con = sql.connect('database.db')
+        cur1 = con.execute("SELECT * FROM images")
+        dat = cur1.fetchall()
+        for d in dat:
+                print(d[1])
+                if(d[1] not in batch_year):
+                        batch_year.append(d[1])
+                
+        print('list = ' + str(batch_year))
+        cur1.close()
+        yr = int(2005)
+        con = sql.connect('database.db')
+        cur = con.execute("SELECT  * FROM images WHERE year = ?",(yr,))
+        data = cur.fetchall()
+        print('d = ' + str(data))
+        cur.close()
 
 
 class RegistrationForm(FlaskForm):
