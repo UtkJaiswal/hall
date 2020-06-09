@@ -86,17 +86,20 @@ def gallery():
 	users = User.query.all()
 	data = {}
 	test_batch = [x.batch for x in users]
-	print('test batch is ',test_batch)
 	batches = [int(x.batch) for x in users]
 	batches.sort()
+	print(' batch is ',batches)
+	
 	# inefficient code, not in a mood to write an optimized one
 	for batch in batches:
 		for user in users:
-			if user.batch == batch:
+			if user.batch == str(batch):
 				images = user.image_file.split(",")[1:]
 				image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ] 
+				print('image_files ',image_files)
 				data[batch] = image_files
 
+	print('data is ',data)
 	return render_template('gallery.html',data=data)
 
 @app.route("/register", methods=['GET', 'POST'])
