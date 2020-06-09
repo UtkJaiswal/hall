@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='complaint.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+<h1>Collection of Memories</h1>
+{% for year,pics in data.items() %}
+<h3>Year:{{year}}</h3>
+<div>
+	{% for pic in pics %}
+		<img class="circle account-img gallery-images" src="{{ pic }}" /><br><br><br>
+	{% endfor %}
+</div>
+
+{% endfor %}
+
+
+
+
+
+{% endblock content %}
+

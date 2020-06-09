@@ -81,6 +81,23 @@ def council():
 def gc():
 	return render_template('gc.html' , title='General Championship')
 
+@app.route("/gallery")
+def gallery():
+	users = User.query.all()
+	data = {}
+	test_batch = [x.batch for x in users]
+	print('test batch is ',test_batch)
+	batches = [int(x.batch) for x in users]
+	batches.sort()
+	# inefficient code, not in a mood to write an optimized one
+	for batch in batches:
+		for user in users:
+			if user.batch == batch:
+				images = user.image_file.split(",")[1:]
+				image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ] 
+				data[batch] = image_files
+
+	return render_template('gallery.html',data=data)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -207,7 +224,7 @@ class RegistrationForm(FlaskForm):
 	confirm_password=PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	department=StringField('Department', validators=[DataRequired(), Length(min=2, max=20)])
 	room_no=StringField('Room Number', validators=[DataRequired(), Length(min=2, max=20)])
-	batch=StringField('Batch', validators=[DataRequired(), Length(min=2, max=20)])
+	batch=StringField('Batch(Year Passed out)', validators=[DataRequired(), Length(min=2, max=20)])
 	submit=SubmitField('Sign Up')
 
 	def validate_username(self, username):

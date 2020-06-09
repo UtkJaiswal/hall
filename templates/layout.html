@@ -54,6 +54,7 @@
             <li class="nav-item"><a class="nav-link" href="#section-menus">Menus</a></li>-->
             <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}"><h3>Home</h3></a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('gc') }}"><h3>GC</h3></a></li>
+             <li class="nav-item"><a class="nav-link" href="{{ url_for('gallery') }}"><h3>Gallery</h3></a></li>
             {% if current_user.is_authenticated %}
               <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><h3>Logout</h3></a></li>
               <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}"><h3>Dashboard</h3></a></li>
