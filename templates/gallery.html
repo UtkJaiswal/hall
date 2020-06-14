@@ -7,7 +7,7 @@
 <h1>Collection of Memories</h1>
 {% for year,pics in data.items() %}
 <h3>Year:{{year}}</h3>
-<div>
+<div class="horiz">
 	{% for pic in pics %}
 		<img class="circle account-img gallery-images" src="{{ pic }}" /><br><br><br>
 	{% endfor %}

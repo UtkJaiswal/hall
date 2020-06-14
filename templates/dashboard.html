@@ -19,6 +19,9 @@
 
  				<div class="form-group">
 					 {{ form.picture(class="form-control-file")}}
+					<h3>Enter Caption</h3>
+					{{ form.caption(class="form-control caption")}}
+				
 					 {{form.submit(class="btn btn-outline-primary")}}
  					{% if form.picture.errors %}
  						{% for error in form.picture.errors %}
@@ -30,8 +33,12 @@
  			</fieldset>
  			<div class="form-group">
 				<div class="media">
-					{% for image_file in gallery %}
-						<img class="circle account-img gallery-images" src="{{ image_file }}" /><br><br><br>
+					{% for img,cap in both %}
+					<div class="pic">
+						<img class="circle account-img gallery-images" src="{{ img }}" />
+						<h3 class="cap">{{ cap }}</h3>			
+						<br><br><br>
+					</div>
 				   {% endfor %}
 				
  		</form>

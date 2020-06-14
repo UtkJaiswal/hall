@@ -51,6 +51,7 @@ class User(db.Model,UserMixin):
 	username=db.Column(db.String(20), unique=True, nullable=False)
 	email=db.Column(db.String(120), unique=True, nullable=False)
 	image_file=db.Column(db.String(), nullable=False, default='')
+	image_caption = db.Column(db.String(200), nullable=True, default='')
 	password=db.Column(db.String(60), nullable=False)
 	department=db.Column(db.String(20), nullable=False)
 	room_no=db.Column(db.String(20), nullable=False)
@@ -94,7 +95,7 @@ def gallery():
 	for batch in batches:
 		for user in users:
 			if user.batch == str(batch):
-				images = user.image_file.split(",")[1:]
+				images = user.image_file.split(",")
 				image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ] 
 				print('image_files ',image_files)
 				data[batch] = image_files
@@ -172,18 +173,19 @@ def dashboard():
 			# Consider the first picture as profile, hence replace it with the default one 
 			if current_user.image_file == '':
 				current_user.image_file = picture_file
+				current_user.image_caption = form.caption.data
 			else:
 				current_user.image_file = current_user.image_file + ','+ picture_file
-		
+				current_user.image_caption = current_user.image_caption+','+form.caption.data
 		db.session.commit()
 		flash('Your account has been updated!', 'success')
 		return redirect(url_for('dashboard'))
 	images = current_user.image_file.split(",")
 	image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ]
 	
-	
-	
-	return render_template('dashboard.html', title='Dashboard', gallery=image_files, form=form, user=current_user.username, email=current_user.email)
+	image_captions = current_user.image_caption.split(',')
+	both = zip(image_files, image_captions)
+	return render_template('dashboard.html', title='Dashboard', both=both,form=form, user=current_user.username, email=current_user.email)
 
 
 @app.route("/complaint", methods=['GET', 'POST'])
@@ -241,6 +243,7 @@ class RegistrationForm(FlaskForm):
 
 class UpdateAccountForm(FlaskForm):
 	picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+	caption = StringField('Caption')
 	submit=SubmitField('Update Gallery')
 
 	

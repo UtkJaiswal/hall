@@ -5,6 +5,20 @@ background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, F
 
 }
 
+.caption {
+ width: 50% !important;
+
+}
+
+.cap {
+    float: bottom !important
+}
+
+.pic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 .gallery-images {
     margin: 10px;
@@ -12,6 +26,12 @@ background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, F
     height: 400px !important;
     border-radius: 4%;
     
+}
+
+.horiz {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .pro {
