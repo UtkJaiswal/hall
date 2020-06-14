@@ -4,15 +4,8 @@
  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
 
  	<div class="content-section alum">
-		 <img class="rounded-circle account pro" src = "{{ profile_pic }}" />
-		 	{% if is_default_profile  %}
-			 <div class="form-group pro-pic">
-				<h6>Update Profile</h6>
-				{{ form.picture(class="form-control-file")}}
-				{{form.submit(class="btn btn-outline-dark")}}
-			</div>
-			{% endif %}
- 			</div>
+		 	
+	</div>
  		</div>
  		<h2 class="account-heading name">{{ user }}</h2>
 		<p class="text-secondary email">{{ email }}</p>

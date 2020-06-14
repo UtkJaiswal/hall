@@ -50,7 +50,7 @@ class User(db.Model,UserMixin):
 	id=db.Column(db.Integer, primary_key=True)
 	username=db.Column(db.String(20), unique=True, nullable=False)
 	email=db.Column(db.String(120), unique=True, nullable=False)
-	image_file=db.Column(db.String(), nullable=False, default='default.jpg')
+	image_file=db.Column(db.String(), nullable=False, default='')
 	password=db.Column(db.String(60), nullable=False)
 	department=db.Column(db.String(20), nullable=False)
 	room_no=db.Column(db.String(20), nullable=False)
@@ -170,7 +170,7 @@ def dashboard():
 			picture_file = save_picture(form.picture.data)
 			
 			# Consider the first picture as profile, hence replace it with the default one 
-			if current_user.image_file == 'default.jpg':
+			if current_user.image_file == '':
 				current_user.image_file = picture_file
 			else:
 				current_user.image_file = current_user.image_file + ','+ picture_file
@@ -181,12 +181,9 @@ def dashboard():
 	images = current_user.image_file.split(",")
 	image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ]
 	
-	profile_pic = image_files[0]
-	gallery = image_files[1:]
-
-	is_default_profile = True if profile_pic == 'default.jpg' else False
 	
-	return render_template('dashboard.html', title='Dashboard', gallery=gallery, profile_pic = profile_pic, is_default_profile = is_default_profile, form=form, user=current_user.username, email=current_user.email)
+	
+	return render_template('dashboard.html', title='Dashboard', gallery=image_files, form=form, user=current_user.username, email=current_user.email)
 
 
 @app.route("/complaint", methods=['GET', 'POST'])
