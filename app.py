@@ -242,7 +242,7 @@ class RegistrationForm(FlaskForm):
 
 
 class UpdateAccountForm(FlaskForm):
-	picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+	picture = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
 	caption = StringField('Caption')
 	submit=SubmitField('Update Gallery')
 
