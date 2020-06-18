@@ -14,7 +14,7 @@ from flask_login import LoginManager, UserMixin, login_user, current_user, logou
 
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail,Message
-
+from itertools import *
 
 
 app = Flask(__name__)
@@ -85,21 +85,23 @@ def gc():
 @app.route("/gallery")
 def gallery():
 	users = User.query.all()
-	data = {}
-	test_batch = [x.batch for x in users]
-	batches = [int(x.batch) for x in users]
-	batches.sort()
-	print(' batch is ',batches)
+	data = []
 	
-	# inefficient code, not in a mood to write an optimized one
-	for batch in batches:
-		for user in users:
-			if user.batch == str(batch):
-				images = user.image_file.split(",")
-				image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ] 
-				print('image_files ',image_files)
-				data[batch] = image_files
+	for user in users:
+		images = user.image_file.split(",")
+		image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ]
+		image_captions = user.image_caption.split(",")
+		user_data = [{pic: cap} for (pic, cap) in zip(image_files, image_captions)]
+		batch = int(user.batch)
 
+		# more efficent by adding while sorting
+		for d in data:
+			if list(d.keys())[0] == batch:
+				d[batch].extend(user_data)
+		# if new entry
+		data.append({batch: user_data})
+
+	data = sorted(data, key = lambda k :list(k.keys())[0])
 	print('data is ',data)
 	return render_template('gallery.html',data=data)
 

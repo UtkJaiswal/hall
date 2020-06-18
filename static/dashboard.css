@@ -5,6 +5,12 @@ background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, F
 
 }
 
+.vertiz {
+    display: flex
+    flex-direction: vertical;
+    justify-content: center;
+}
+
 .caption {
  width: 50% !important;
 

@@ -5,15 +5,29 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
 
 <h1>Collection of Memories</h1>
-{% for year,pics in data.items() %}
-<h3>Year:{{year}}</h3>
+{% for d in data %}
+	{% for year,pic_cap in d.items() %}
+		<h3>Year:{{year}}</h3>
+		<div class="horiz">
+		{% for pc_dict in pic_cap%}
+			{% for key, value in pc_dict.items() %}
+				<div class="vertiz">
+					<img class="circle account-img gallery-images" src="{{ key }}" />
+					<h4>{{ value }}</h4>
+				</div>
+			{% endfor %}
+		{% endfor %}
+		</div>	
+	{% endfor %}
+{% endfor %}
+
+
 <div class="horiz">
 	{% for pic in pics %}
 		<img class="circle account-img gallery-images" src="{{ pic }}" /><br><br><br>
 	{% endfor %}
 </div>
 
-{% endfor %}
 
 
 
