@@ -13,7 +13,8 @@
 			{% for key, value in pc_dict.items() %}
 				<div class="vertiz">
 					<img class="circle account-img gallery-images" src="{{ key }}" />
-					<h4>{{ value }}</h4>
+					<h4>{{ value[0] }}</h4>
+					<h4>uploaded by {{ value[1] }}</h4>
 				</div>
 			{% endfor %}
 		{% endfor %}

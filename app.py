@@ -91,7 +91,7 @@ def gallery():
 		images = user.image_file.split(",")
 		image_files = [ url_for('static', filename='profile_pics/' + img) for img in images ]
 		image_captions = user.image_caption.split(",")
-		user_data = [{pic: cap} for (pic, cap) in zip(image_files, image_captions)]
+		user_data = [{pic: [cap,user.username]} for (pic, cap) in zip(image_files, image_captions)]
 		batch = int(user.batch)
 
 		# more efficent by adding while sorting
