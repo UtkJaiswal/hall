@@ -29,7 +29,7 @@ app.config.update(
 	MAIL_PORT=465,
 	MAIL_USE_SSL=True,
 	MAIL_USERNAME = 'llr.hall.complaints@gmail.com',
-	MAIL_PASSWORD = 'yollr123'
+	MAIL_PASSWORD = 'yollr9876'
 	)
 db=SQLAlchemy(app)
 bcrypt=Bcrypt(app)
