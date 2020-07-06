@@ -1,5 +1,6 @@
 # LLR-site
 LLR  Hall Website
+Deployed on Heroku
 
 # Installation and Setup
 
